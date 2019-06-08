@@ -1,0 +1,75 @@
+{
+  "logs": {
+    "logs_collected": {
+      "windows_events": {
+        "collect_list": [
+          {
+            "event_format": "xml",
+            "event_levels": [
+              "INFORMATION",
+              "WARNING",
+              "ERROR",
+              "CRITICAL"
+            ],
+            "event_name": "System",
+            "log_group_name": "System"
+          }
+        ]
+      }
+    }
+  },
+  "metrics": {
+    "append_dimensions": {
+      "AutoScalingGroupName": "${aws:AutoScalingGroupName}",
+      "ImageId": "${aws:ImageId}",
+      "InstanceId": "${aws:InstanceId}",
+      "InstanceType": "${aws:InstanceType}"
+    },
+    "metrics_collected": {
+      "LogicalDisk": {
+        "measurement": [
+          "% Free Space"
+        ],
+        "metrics_collection_interval": 300,
+        "resources": [
+          "*"
+        ]
+      },
+      "Memory": {
+        "measurement": [
+          "% Committed Bytes In Use"
+        ],
+        "metrics_collection_interval": 300
+      },
+      "Paging File": {
+        "measurement": [
+          "% Usage"
+        ],
+        "metrics_collection_interval": 300,
+        "resources": [
+          "*"
+        ]
+      },
+      "PhysicalDisk": {
+        "measurement": [
+          "% Disk Time"
+        ],
+        "metrics_collection_interval": 300,
+        "resources": [
+          "*"
+        ]
+      },
+      "Processor": {
+        "measurement": [
+          "% User Time",
+          "% Idle Time",
+          "% Interrupt Time"
+        ],
+        "metrics_collection_interval": 300,
+        "resources": [
+          "*"
+        ]
+      }
+    }
+  }
+}
