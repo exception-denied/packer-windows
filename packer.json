@@ -1,0 +1,52 @@
+{
+  "variables": {
+    "vpc_id": "vpc-088ac793b7f916e00",
+    "subnet_id": "subnet-0e4701c342cd4acb5",
+    "temporary_security_group_source_cidrs" : "0.0.0.0/0",
+    "region": "ap-south-1"
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "region": "{{user `region`}}",
+    "communicator": "winrm",
+    "temporary_security_group_source_cidrs": "{{user `temporary_security_group_source_cidrs`}}",
+    "winrm_username": "Administrator",
+    "encrypt_boot": true,
+    "source_ami_filter": {
+      "filters": {
+        "virtualization-type": "hvm",
+          "name": "*Windows_Server-2012-R2*English-64Bit-Base*",
+          "root-device-type": "ebs"
+      },
+      "most_recent": true,
+      "owners": "amazon"
+    },
+    "instance_type": "t3.medium",
+    "ssh_interface": "public_ip",
+    "iam_instance_profile": "{{user `iam_instance_profile`}}",
+    "vpc_id": "{{user `vpc_id`}}",
+    "subnet_id": "{{user `subnet_id`}}",
+    "ami_name": "window-server-2012R2-{{isotime \"01/02/06-15.04.05\" | clean_ami_name}}",
+    "ami_description": "Golden AMI - Windows Server 2012 R2",
+    "associate_public_ip_address": "true",
+    "user_data_file": "scripts/userdata.ps1",
+    "tags": {
+      "Name": "Windows Server 2012 R2",
+      "Build Time": "{{isotime \"01/02/06-15:04:05\"}}"
+    }
+  }],
+  "provisioners": [
+    {
+      "type": "powershell",
+      "scripts": [
+        "scripts/EC2Config.ps1",
+        "scripts/BundleConfig.ps1"
+      ]
+    }
+  ],
+  "post-processors": [
+      {
+        "type": "manifest"
+      }
+    ]
+}
